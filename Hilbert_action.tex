@@ -1,0 +1,426 @@
+\documentclass{article}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{gensymb}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{color}
+\usepackage{tcolorbox}
+\usepackage{here}
+\usepackage{wrapfig}
+\usepackage{multicol}
+\usepackage{tensor}
+\usepackage{enumitem}
+
+%tikz
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{ {~/} } 
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+%\numberwithin{equation}{section}
+
+\title{Hilbert action}
+\author{Tsushima Ryunosuke}
+\date{}
+
+%declere math operator
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\sgn}{sgn}
+
+%define macro
+\def\u{\underline}
+\def\t{\tensor}
+\def\bb{\mathbb}
+\def\R{\mathbb{R}}
+\def\ve{\varepsilon}
+\def\~{\sim}
+\def\scrB{\mathscr{B}}
+
+\begin{document}
+
+\maketitle
+
+\section{HILBERT ACTION}
+Hilbert action 
+\begin{equation}
+    S_H = \int \sqrt{-g} R d^nx
+\end{equation}
+
+Take variation of metric $\delta \t{g}{_\mu_\nu}$. Then the metric under variation is 
+\begin{equation}
+    g'_{\mu\nu} = (g_{\mu\nu} + \delta g_{\mu\nu}) 
+\end{equation}
+then the inverse is
+\begin{equation}
+    {g'}^{\mu\nu} = (g^{\mu\nu} +  \delta g^{\mu\nu})
+\end{equation}
+if we act it on the metric
+\begin{align}
+    \t{\delta}{^\mu_\nu} = {g'}^{\mu\rho} g'_{\rho \nu} &= (g^{\mu\rho} +\delta g^{\mu\rho})(g_{\rho\nu} + \delta g_{\rho\nu}) \\
+                                                        &= g^{\mu\rho} g_{\rho\nu} + g_{\rho\nu} \delta g^{\mu\rho} + g^{\mu\rho} \delta g_{\rho\nu} + \mathcal{O} (\delta^2) \\
+                                                        &= \t{\delta}{^\mu_\nu} + g_{\rho\nu} \delta g^{\mu\rho} + g^{\mu\rho} \delta g_{\rho\nu} + \mathcal{O} (\delta^2)
+\end{align}
+then by neglecting $\mathcal{O}(\delta^2)$ term
+\begin{align}
+    0 = g_{\rho\nu} \delta g^{\mu\rho} + g^{\mu\rho} \delta g_{\rho\nu}  &= g_{\rho\nu} g^{\mu \lambda} g_{\lambda\sigma}  \delta g^{\sigma\rho} + g^{\mu\rho} \delta g_{\rho\nu} \\
+                                                                         &= g^{\mu \rho} \left(  g_{\rho \sigma} g_{\nu\lambda}\delta g^{\sigma \lambda} +\delta g_{\rho\nu}\right)
+\end{align}
+Since this is true for any point and indeices of metric, by variation of inverse metric
+\begin{equation}
+    \delta g_{\mu \nu} = - g_{\mu \sigma} g_{\nu\lambda}\delta g^{\sigma \lambda}.
+\end{equation}
+ 
+The variation of Hilbert action is 
+\begin{align}
+    \delta S_H &= \int \delta \sqrt{-g} R d^n x + \int \sqrt{-g} \delta R d^n x  \\
+               &= \int \delta \sqrt{-g} R d^n x + \int \sqrt{-g} \delta (g^{\mu\nu} R_{\mu\nu}) d^n x  \\
+               &= \int \delta \sqrt{-g} R d^n x + \int \sqrt{-g} \delta g^{\mu\nu} R_{\mu\nu} d^n x  + \int \sqrt{-g} g^{\mu\nu} \delta R_{\mu\nu} d^n x\\
+\end{align}
+
+\ 
+
+Say 
+\begin{align}
+    \delta S_1 &= \int \delta \sqrt{-g} R d^n x \\
+    \delta S_2 &= \int \sqrt{-g} R_{\mu\nu} \delta g^{\mu\nu}  d^n x \\
+    \delta S_3 &= \int \sqrt{-g} g^{\mu\nu} \delta R_{\mu\nu} d^n x 
+\end{align}
+
+
+For $\delta S_1$,
+\begin{equation}
+    \delta \sqrt{-g} = - \frac{1}{2} \frac{\delta g}{\sqrt{-g}}.
+\end{equation}
+We now use two lemmas and a proposotion
+
+\lemma{\label{detprod}
+    If $M$ is a diagonalizable matrix, and its eigen values are $\{ \alpha_i \}$, the matrix $P$ transform $M$ to diagonal matrix, then
+    \begin{equation}
+        \det (M) =  \prod_{i} \alpha_i
+    \end{equation}
+}
+\proof{
+    since determinant is invariant
+    \begin{equation}
+        \det (P^{-1} M P) = \det(P^{-1}) \det(M) \det(P) = \det(M)
+    \end{equation}
+    then, because $P^{-1} M P$ is diagonal, 
+    \begin{equation}
+        \det(M) = \prod_i \alpha_i
+    \end{equation}
+}
+
+\ 
+
+\lemma{\label{detexp}
+    If $M$ is a diagonalizable matrix, then
+    \begin{equation}
+        \det(\exp(M)) = \exp(\Tr (M))
+    \end{equation}
+}
+\proof{
+    By definition 
+    \begin{equation}
+        \exp(M) = \sum_{k=0}^\infty \frac{M^k}{k!}
+    \end{equation}
+    then eigenvalues of $\exp(M)$ are $\{ \exp(\alpha_i) \}$. Thus by lemma \ref{detprod}
+    \begin{equation}
+        \det(\exp(M)) = \prod_{i} \exp(\alpha_i)) = \exp\left( \sum_i \alpha_i \right)
+    \end{equation}
+    Since trace is invariant of basis, that $\Tr(M) = \Tr(P^{-1} M P) = \sum_i \alpha_i$,
+    \begin{equation}
+        \det(\exp(M)) = \exp(\Tr(M))
+    \end{equation}
+}
+
+\prop{
+    \begin{equation}
+        \log(\det(M)) = \Tr ( \log(M))
+    \end{equation}
+}
+\proof{
+    Define $\log(M)$ by $\exp(\log (M)) = M$. By lemma \ref{detexp}, and replacing $M \rightarrow \log(M)$
+    \begin{equation}
+        \det(M) = \exp( \Tr ( \log(M))).
+    \end{equation}
+    By taking logarithm both side
+    \begin{equation}
+        \log \left( \det(M) \right) = \Tr ( \log (M))
+    \end{equation}        
+}
+
+\ 
+
+We can use this proposition for metric, because metric is generaly diagonalizable for its symmetricity;
+\begin{equation}
+    \log ( g ) = \Tr ( \log (g_{\mu\nu} dx^\mu \otimes dx^\nu). 
+\end{equation}
+If we write matrix of metric by $g^M$
+\begin{equation}
+    \delta \log(g) = \frac{1}{g} \delta g 
+\end{equation}
+and 
+\begin{align}
+    \delta \Tr( \log(g^M)) &= \Tr(\log (g^M + \delta g^M)) - \Tr ( \log g^M) \\
+                           &= \Tr\left(\log g^M + \log \left(E + (g^M)^{-1}\delta g^M\right) \right) - \Tr\left( \log(g^M) \right) \\
+                           &= \Tr \left( \log \left(E + (g^M)^{-1}\delta g^M\right) \right) \\
+                           &= \Tr \left( (g^M)^{-1}\delta g^M \right) + \mathcal{O}( (\delta g^M)^2 ),
+\end{align}
+then
+\begin{equation}
+    \frac{1}{g} \delta g = g^{\mu \nu} \delta g_{\mu\nu}
+\end{equation}
+and 
+\begin{equation}
+    \delta g = g (g^{\mu \nu} \delta g_{\mu\nu} ) = - g( g^{\mu \nu} g_{\mu \rho} g_{\nu \sigma} \delta g^{\rho\sigma} ) = - g( g_{\mu\nu} \delta g^{\mu\nu} ),
+\end{equation}
+now go back to $\delta \sqrt{-g}$,
+\begin{equation}
+    \delta \sqrt{-g} = \frac{g}{2\sqrt{-g}}  g_{\mu\nu} \delta g^{\mu\nu} = - \frac{1}{2} \sqrt{-g} g_{\mu\nu} \delta g^{\mu\nu}
+\end{equation}
+and $\delta S_1$ is
+\begin{equation}
+    \delta S_1 = \int dx^n \sqrt{-g} \left( -\frac{1}{2} R g_{\mu\nu} \delta g^{\mu\nu} \right)
+\end{equation}
+
+For $\delta S_3$, 
+\begin{align}
+    \delta R_{\mu\nu} &= \delta ( g^{\sigma \lambda} g_{\lambda\rho} \t{R}{^\rho_\mu_\sigma_\nu} ) \\
+                      &= g_{\lambda\rho} \t{R}{^\rho_\mu_\sigma_\nu} \delta g^{\sigma\lambda} + g^{\sigma \lambda} \t{R}{^\rho_\mu_\sigma_\nu} \delta g_{\lambda\rho} + g^{\sigma\lambda} g_{\lambda\rho} \delta \t{R}{^\rho_\mu_\sigma_\nu} \\
+                      &= g_{\lambda\rho} \t{R}{^\rho_\mu_\sigma_\nu} \delta g^{\sigma\lambda} - g^{\sigma \lambda} \t{R}{^\rho_\mu_\sigma_\nu}  g_{\lambda \alpha} g_{\rho \beta} \delta g^{\alpha\beta} + g^{\sigma\lambda} g_{\lambda\rho} \delta \t{R}{^\rho_\mu_\sigma_\nu} \\
+                      &= g_{\lambda\rho} \t{R}{^\rho_\mu_\sigma_\nu} \delta g^{\sigma\lambda} -  g_{\rho \lambda}\t{R}{^\rho_\mu_\sigma_\nu}    \delta g^{\sigma\lambda} + g^{\sigma\lambda} g_{\lambda\rho} \delta \t{R}{^\rho_\mu_\sigma_\nu} \\
+                      &=  g^{\sigma\lambda} g_{\lambda\rho} \delta \t{R}{^\rho_\mu_\sigma_\nu} \\
+\end{align}
+(note that this is trivial calculation because $\delta (\t{\delta}{^\mu_\nu}) = 0$)
+
+Since Riemann tensor is
+\begin{equation}
+    \t{R}{^\rho_\mu_\sigma_\nu} = \partial_\sigma \t{\Gamma}{^\rho_\nu_\mu} - \partial_\nu \t{\Gamma}{^\rho_\sigma_\mu} + \t{\Gamma}{^\rho_\sigma_\lambda} \t{\Gamma}{^\lambda_\nu_\mu} - \t{\Gamma}{^\rho_\nu_\lambda} \t{\Gamma}{^\lambda_\sigma_\mu},
+\end{equation}
+
+\begin{align}
+    \delta \t{R}{^\rho_\mu_\sigma_\nu} &= \partial_\sigma \delta \t{\Gamma}{^\rho_\nu_\mu} - \partial_\nu \delta \t{\Gamma}{^\rho_\sigma_\mu} + (\delta \t{\Gamma}{^\rho_\sigma_\lambda} ) \t{\Gamma}{^\lambda_\nu_\mu} + \t{\Gamma}{^\rho_\sigma_\lambda} (\delta \t{\Gamma}{^\lambda_\nu_\mu}) - (\delta \t{\Gamma}{^\rho_\nu_\lambda}) \t{\Gamma}{^\lambda_\sigma_\mu} - \t{\Gamma}{^\rho_\nu_\lambda} (\delta \t{\Gamma}{^\lambda_\sigma_\mu}) \\
+                                       &= \left(\partial_\sigma (\delta \t{\Gamma}{^\rho_\nu_\mu}) + \t{\Gamma}{^\rho_\sigma_\lambda} (\delta \t{\Gamma}{^\lambda_\nu_\mu}) - \t{\Gamma}{^\lambda_\sigma_\mu} (\delta \t{\Gamma}{^\rho_\nu_\lambda}) - \t{\Gamma}{^\lambda_\sigma_\nu} (\delta \t{\Gamma}{^\rho_\lambda_\mu}) \right) + \t{\Gamma}{^\lambda_\sigma_\nu} (\delta \t{\Gamma}{^\rho_\lambda_\mu}) \nonumber\\ 
+                                       & \qquad \qquad - \left( \partial_\nu (\delta \t{\Gamma}{^\rho_\sigma_\mu}) +\t{\Gamma}{^\rho_\nu_\lambda} (\delta \t{\Gamma}{^\lambda_\sigma_\mu}) - \t{\Gamma}{^\lambda_\nu_\mu} (\delta \t{\Gamma}{^\rho_\sigma_\lambda}) - \t{\Gamma}{^\lambda_\nu_\sigma} (\delta \t{\Gamma}{^\rho_\lambda_\mu}) \right) - \t{\Gamma}{^\lambda_\nu_\sigma} (\delta \t{\Gamma}{^\rho_\lambda_\mu}) \\
+                                       &= \nabla_\sigma (\delta \t{\Gamma}{^\rho_\nu_\mu}) - \nabla_\nu (\delta \t{\Gamma}{^\rho_\sigma_\mu}) + \t{\Gamma}{^\lambda_\sigma_\nu} (\delta \t{\Gamma}{^\rho_\lambda_\mu}) - \t{\Gamma}{^\lambda_\nu_\sigma} (\delta \t{\Gamma}{^\rho_\lambda_\mu})
+\end{align}
+By torsion free condition
+\begin{equation}
+    \delta \t{R}{^\rho_\mu_\sigma_\nu} = \nabla_\sigma (\delta \t{\Gamma}{^\rho_\nu_\mu}) - \nabla_\nu (\delta \t{\Gamma}{^\rho_\sigma_\mu}).
+\end{equation}
+Thus,
+\begin{equation}
+    \delta \t{R}{_\mu_\nu} = \nabla_\lambda (\delta \t{\Gamma}{^\lambda_\nu_\mu}) - \nabla_\nu (\delta \t{\Gamma}{^\lambda_\lambda_\mu} )
+\end{equation}
+and
+\begin{align}
+    g^{\mu\nu} \delta \t{R}{_\mu_\nu} &= g^{\mu\nu} \nabla_\lambda (\delta \t{\Gamma}{^\lambda_\nu_\mu}) - g^{\mu\nu} \nabla_\nu (\delta \t{\Gamma}{^\lambda_\lambda_\mu} ) \\
+                                      &= \nabla_\lambda \left( g^{\mu\nu} \delta \t{\Gamma}{^\lambda_\nu_\mu} \right) - \nabla_\nu \left( g^{\mu\nu} \delta \t{\Gamma}{^\lambda_\lambda_\mu} \right) \\
+                                      &= \nabla_\lambda \left( g^{\mu\nu} \delta \t{\Gamma}{^\lambda_\nu_\mu}  -  g^{\mu\lambda} \delta \t{\Gamma}{^\sigma_\sigma_\mu} \right)
+\end{align}
+
+Consider variation of Christoffel symbol is
+\begin{align} 
+    \delta \t{\Gamma}{^\rho_\mu_\nu} &= \frac{1}{2} \delta \left( g^{\rho \lambda} (\partial_\mu g_{\nu\lambda} + \partial_\nu g_{\lambda\mu} -\partial_\lambda g_{\mu\nu}) \right)  \\
+                                     &= \frac{1}{2} (\partial_\mu g_{\nu\lambda} + \partial_\nu g_{\lambda\mu} -\partial_\lambda g_{\mu\nu})\delta g^{\rho\lambda} \nonumber \\
+                                     & \qquad \qquad + \frac{1}{2} g^{\rho \lambda} \left(\partial_\mu (\delta g_{\nu\lambda}) + \partial_\nu (\delta g_{\lambda\mu}) -\partial_\lambda (\delta g_{\mu\nu}) \right)   \\
+                                     &= \frac{1}{2} (\partial_\mu g_{\nu\lambda} + \partial_\nu g_{\lambda\mu} -\partial_\lambda g_{\mu\nu})\delta g^{\rho\lambda} \nonumber \\
+                                     & \qquad \qquad - \frac{1}{2} g^{\rho \lambda} \left(\partial_\mu (g_{\nu \alpha} g_{\lambda \beta} \delta g^{\alpha\beta}) + \partial_\nu (g_{\lambda\alpha} g_{\mu \beta}\delta g^{\alpha\beta}) -\partial_\lambda (g_{\mu\alpha} g_{\nu\beta}\delta g^{\alpha\beta}) \right)  \\
+                                     &= \frac{1}{2} (\partial_\mu g_{\nu\lambda} + \partial_\nu g_{\lambda\mu} -\partial_\lambda g_{\mu\nu})\delta g^{\rho\lambda} \nonumber \\
+                                     & \qquad - \frac{1}{2} g^{\rho \lambda} \left(\partial_\mu (g_{\nu \alpha} g_{\lambda \beta} ) + \partial_\nu (g_{\lambda\alpha} g_{\mu \beta}) -\partial_\lambda (g_{\mu\alpha} g_{\nu\beta}) \right)\delta g^{\alpha\beta} \nonumber \\
+                                     & \qquad \qquad - \frac{1}{2} g^{\rho \lambda} \left(g_{\nu \alpha} g_{\lambda \beta}\partial_\mu ( \delta g^{\alpha\beta}) + g_{\lambda\alpha} g_{\mu \beta}\partial_\nu (\delta g^{\alpha\beta}) - g_{\mu\alpha} g_{\nu\beta} \partial_\lambda (\delta g^{\alpha\beta}) \right)   \\
+                                     &= \frac{1}{2} (\partial_\mu g_{\nu\lambda} + \partial_\nu g_{\lambda\mu} -\partial_\lambda g_{\mu\nu})\delta g^{\rho\lambda} \nonumber \\
+                                     & \qquad - \frac{1}{2} g^{\rho \lambda} \left(g_{\nu \alpha}\partial_\mu ( g_{\lambda \beta} ) + g_{\mu \beta} \partial_\nu (g_{\lambda\alpha} ) - g_{\mu\alpha} \partial_\lambda ( g_{\nu\beta}) \right)\delta g^{\alpha\beta} \nonumber \\
+                                     & \qquad \qquad - \frac{1}{2} g^{\rho \lambda} \left(g_{\lambda \beta} \partial_\mu (g_{\nu \alpha}  ) + g_{\lambda\alpha} \partial_\nu ( g_{\mu \beta}) - g_{\nu\beta} \partial_\lambda (g_{\mu\alpha} ) \right)\delta g^{\alpha\beta} \nonumber \\
+                                     & \qquad \qquad \qquad - \frac{1}{2}  \left(g_{\nu \alpha} \partial_\mu ( \delta g^{\alpha\rho}) +  g_{\mu \beta}\partial_\nu (\delta g^{\rho\beta}) - g_{\mu\alpha} g_{\nu\beta} g^{\rho \lambda}\partial_\lambda (\delta g^{\alpha\beta}) \right) \\
+                                     &= - \frac{1}{2} (\partial_\lambda g_{\mu\nu})\delta g^{\rho\lambda} \nonumber \\
+                                     & \qquad - \frac{1}{2} g^{\rho \lambda} \left(g_{\nu \alpha}\partial_\mu ( g_{\lambda \beta} ) + g_{\mu \beta} \partial_\nu (g_{\lambda\alpha} ) - g_{\mu\alpha} \partial_\lambda ( g_{\nu\beta}) \right)\delta g^{\alpha\beta} \nonumber \\
+                                     & \qquad \qquad - \frac{1}{2} g^{\rho \lambda} \left( - g_{\nu\beta} \partial_\lambda (g_{\mu\alpha} ) \right)\delta g^{\alpha\beta} \nonumber \\
+                                     & \qquad \qquad \qquad - \frac{1}{2}  \left(g_{\nu \alpha} \partial_\mu ( \delta g^{\alpha\rho}) +  g_{\mu \beta}\partial_\nu (\delta g^{\rho\beta}) - g_{\mu\alpha} g_{\nu\beta} g^{\rho \lambda}\partial_\lambda (\delta g^{\alpha\beta}) \right) \nonumber \\
+                                     &= - \frac{1}{2} g_{\nu\alpha} \left( \partial_\mu (\delta g^{\alpha \rho}) + (\delta g^{\alpha\beta}) g^{\rho \lambda} \partial_\mu g_{\lambda \beta}  \right) \nonumber \\
+                                     & \qquad - \frac{1}{2} g_{\mu\beta} \left( \partial_\nu (\delta g^{\rho\beta}) + (\delta g^{\alpha\beta})g^{\rho\lambda} \partial_\nu (g_{\lambda\alpha}) \right) \nonumber \\
+                                     & \qquad \qquad + \frac{1}{2} g^{\rho\lambda} \left( g_{\mu\alpha} g_{\nu\beta} \partial_\lambda (\delta g^{\alpha\beta}) + (\delta g^{\alpha\beta})g_{\mu\alpha} \partial_{\lambda} g_{\nu\beta} + (\delta g^{\alpha\beta})g_{\nu\beta} \partial_\lambda g_{\mu\alpha} \right) \nonumber \\
+                                     & \qquad \qquad \qquad - \frac{1}{2} (\partial_\lambda g_{\mu\nu}) \delta g^{\rho\lambda}  
+\end{align}
+Here we chack some covariant derivative,
+\begin{align}
+    C_1 = g_{\nu\alpha} \nabla_\mu (\delta g^{\alpha \rho}) &= g_{\nu\alpha} \partial_\mu (\delta g^{\alpha\rho}) + g_{\nu\alpha}\t{\Gamma}{^\alpha_\mu_\kappa} \delta g^{\kappa \rho} + g_{\nu\alpha}\t{\Gamma}{^\rho_\mu_\kappa} \delta g^{\alpha\kappa}\\
+    C_2 = g_{\mu\beta} \nabla_\nu (\delta g^{\rho \beta}) &= g_{\mu\beta} \partial_\nu (\delta g^{\rho\beta}) + g_{\mu\beta} \t{\Gamma}{^\rho_\nu_\kappa} \delta g^{\kappa \beta} + g_{\mu\beta}\t{\Gamma}{^\beta_\nu_\kappa} \delta g^{\rho\kappa}\\
+    C_3 = g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \nabla_\lambda (\delta g^{\alpha\beta}) &= g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \partial_\lambda (\delta g^{\alpha\beta} ) \nonumber \\
+    & \qquad  + g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \t{\Gamma}{^\alpha_\lambda_\kappa} \delta g^{\kappa \beta} + g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \t{\Gamma}{^\beta_\lambda_\kappa} \delta g^{\alpha \kappa} 
+\end{align}
+
+\ 
+
+\begin{align}
+    C_1 - g_{\nu\alpha} \partial_\mu (\delta g^{\alpha\rho}) &= \frac{1}{2} g_{\nu\alpha} g^{\rho\gamma} (\partial_\mu g_{\gamma \kappa} + \partial_\kappa g_{\mu \gamma} - \partial_\gamma g_{\mu\kappa} ) \delta g^{\alpha \kappa}
+ \nonumber\\
+                                                               & \qquad + \frac{1}{2} g_{\nu\alpha} g^{\alpha \gamma} (\partial_\mu g_{\gamma \kappa} + \partial_\kappa g_{\mu \gamma} - \partial_\gamma g_{\mu\kappa}) \delta g^{\kappa\rho} \\
+                                                               &= \frac{1}{2} g_{\nu\alpha} g^{\rho\gamma} (\partial_\mu g_{\gamma \kappa} + \partial_\kappa g_{\mu \gamma} - \partial_\gamma g_{\mu\kappa} ) \delta g^{\alpha \kappa}
+ \nonumber\\
+                                                               & \qquad + \frac{1}{2}  (\partial_\mu g_{\nu \kappa} + \partial_\kappa g_{\mu \nu} - \partial_\nu g_{\mu\kappa}) \delta g^{\kappa\rho}
+\end{align}
+
+\begin{align}
+    C_2 - g_{\mu\beta} \partial_\nu (\delta g^{\rho\beta}) &= \frac{1}{2} g_{\mu\beta} g^{\rho \gamma} (\partial_\nu g_{\gamma \kappa} + \partial_\kappa g_{\nu \gamma} - \partial_\gamma g_{\nu\kappa}) \delta g^{\kappa\beta} 
+    \nonumber \\
+                                                               &\qquad + \frac{1}{2} g_{\mu\beta} g^{\beta\gamma} (\partial_\nu g_{\gamma \kappa} + \partial_\kappa g_{\nu \gamma} - \partial_\gamma g_{\nu\kappa} ) \delta g^{\rho \kappa}\\
+                                                               &=\frac{1}{2} g_{\mu\beta} g^{\rho \gamma} (\partial_\nu g_{\gamma \kappa} + \partial_\kappa g_{\nu \gamma} - \partial_\gamma g_{\nu\kappa}) \delta g^{\kappa\beta} 
+    \nonumber \\
+                                                               &\qquad + \frac{1}{2}  (\partial_\nu g_{\mu \kappa} + \partial_\kappa g_{\nu \mu} - \partial_\mu g_{\nu\kappa} ) \delta g^{\rho \kappa}
+\end{align}
+
+\begin{align}
+    C_3 - g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \partial_\lambda (\delta g^{\alpha\beta} )
+    &= \frac{1}{2} g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} g^{\alpha \gamma} (\partial_\lambda g_{\gamma \kappa} + \partial_\kappa g_{\lambda \gamma} - \partial_\gamma g_{\lambda \kappa} ) \delta g^{\kappa\beta} \nonumber \\
+    &\qquad + \frac{1}{2} g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} g^{\beta \gamma} (\partial_\lambda g_{\gamma \kappa} + \partial_\kappa g_{\lambda \gamma} - \partial_\gamma g_{\lambda \kappa} ) \delta g^{\alpha\kappa}  \\
+    &= \frac{1}{2}  g_{\nu\beta} g^{\rho\lambda}  (\partial_\lambda g_{\mu \kappa} + \partial_\kappa g_{\lambda \mu} - \partial_\mu g_{\lambda \kappa} ) \delta g^{\kappa\beta} \nonumber \\
+    &\qquad + \frac{1}{2} g_{\mu\alpha} g^{\rho\lambda}  (\partial_\lambda g_{\nu \kappa} + \partial_\kappa g_{\lambda \nu} - \partial_\nu g_{\lambda \kappa} ) \delta g^{\alpha\kappa}  \\
+    &= \frac{1}{2}  g_{\nu\alpha} g^{\rho\gamma}  (\partial_\gamma g_{\mu \kappa} + \partial_\kappa g_{\gamma \mu} - \partial_\mu g_{\gamma \kappa} ) \delta g^{\kappa \alpha} \nonumber \\
+    &\qquad + \frac{1}{2} g_{\mu\beta} g^{\rho \gamma }  (\partial_\gamma g_{\nu \kappa} + \partial_\kappa g_{ \gamma \nu} - \partial_\nu g_{\gamma \kappa} ) \delta g^{\beta\kappa}  
+\end{align}
+
+Thus 
+\begin{align}
+    C_1 + C_2 - C_3 &= g_{\nu\alpha} \partial_\mu (\delta g^{\alpha\rho}) +  g_{\nu\alpha} g^{\rho\gamma} (\partial_\mu g_{\gamma \kappa}  - \partial_\gamma g_{\mu\kappa} ) \delta g^{\alpha \kappa} \nonumber \\
+                    & \quad+ g_{\mu\beta} \partial_\nu (\delta g^{\rho\beta}) + g_{\mu\beta} g^{\rho \gamma} (\partial_\nu g_{\gamma \kappa}  - \partial_\gamma g_{\nu\kappa}) \delta g^{\kappa\beta} \nonumber \\
+                    & \qquad \qquad - g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \partial_\lambda (\delta g^{\alpha\beta} ) \nonumber \\
+                    & \qquad \qquad + \frac{1}{2} \big( (\partial_\mu g_{\nu \kappa} + \partial_\kappa g_{\mu \nu} - \partial_\nu g_{\mu\kappa} )\delta g^{\kappa\rho} + ( \partial_\nu g_{\mu \kappa} + \partial_\kappa g_{\nu \mu} - \partial_\mu g_{\nu\kappa} ) \delta g^{\rho \kappa} \big) 
+                    \\
+                    &= g_{\nu\alpha} \partial_\mu (\delta g^{\alpha\rho}) +  g_{\nu\alpha} g^{\rho\lambda} (\partial_\mu g_{\lambda \kappa}  - \partial_\lambda g_{\mu\kappa} ) \delta g^{\alpha \kappa} \nonumber \\
+                    & \quad+ g_{\mu\beta} \partial_\nu (\delta g^{\rho\beta}) + g_{\mu\beta} g^{\rho \lambda} (\partial_\nu g_{\lambda \kappa}  - \partial_\lambda g_{\nu\kappa}) \delta g^{\kappa\beta} \nonumber \\
+                    & \qquad \qquad - g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \partial_\lambda (\delta g^{\alpha\beta} ) \nonumber \\
+                    & \qquad \qquad + \big( \partial_\kappa g_{\mu \nu} \big)\delta g^{\kappa\rho} 
+                    \\
+                    &= g_{\nu\alpha} \partial_\mu (\delta g^{\alpha\rho}) + g_{\nu\alpha} g^{\rho\lambda} (\partial_\mu g_{\lambda \beta}) (\delta g^{\alpha \beta}) - g_{\nu\alpha} g^{\rho\lambda} (  \partial_\lambda g_{\mu\beta} ) \delta g^{\alpha \beta} \nonumber \\
+                    & \quad+ g_{\mu\beta} \partial_\nu (\delta g^{\rho\beta}) +g_{\mu\beta} g^{\rho \lambda} (\partial_\nu g_{\lambda \alpha}) ( \delta g^{\alpha\beta} ) - g_{\mu\beta} g^{\rho \lambda} (  \partial_\lambda g_{\nu\alpha}) \delta g^{\alpha\beta} \nonumber \\
+                    & \qquad \qquad - g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \partial_\lambda (\delta g^{\alpha\beta} ) \nonumber \\
+                    & \qquad \qquad + \big( \partial_\lambda g_{\mu \nu} \big)\delta g^{\lambda\rho} 
+                    \\
+                    &= g_{\nu\alpha} \partial_\mu (\delta g^{\alpha\rho}) + g_{\nu\alpha} g^{\rho\lambda} (\partial_\mu g_{\lambda \beta}) \delta g^{\alpha \beta}  \nonumber \\
+                    & \quad+ g_{\mu\beta} \partial_\nu (\delta g^{\rho\beta}) +g_{\mu\beta} g^{\rho \lambda} (\partial_\nu g_{\lambda \alpha})  \delta g^{\alpha\beta}  \nonumber \\
+                    & \qquad \qquad - g_{\mu\alpha} g_{\nu\beta} g^{\rho\lambda} \partial_\lambda (\delta g^{\alpha\beta} ) -g_{\nu\alpha} g^{\rho\lambda} ( \partial_\lambda g_{\mu\beta} ) \delta g^{\alpha \beta} -g_{\mu\beta} g^{\rho \lambda} ( \partial_\lambda g_{\nu\alpha}) \delta g^{\alpha\beta} \nonumber \\
+                    & \qquad \qquad + \big( \partial_\lambda g_{\mu \nu} \big)\delta g^{\rho\lambda} 
+\end{align}
+By this we can see that,
+\begin{equation}
+    \delta \t{\Gamma}{^\rho_\mu_\nu} = -\frac{1}{2} (C_1 + C_2 - C_3 ) = - \frac{1}{2} \left[ g_{\nu\lambda} \nabla_\mu (\delta g^{\lambda \rho}) + g_{\mu\lambda}\nabla_\nu (\delta g^{\rho \lambda}) - g_{\mu\alpha}g_{\nu\beta} g^{\rho\lambda} \nabla_\lambda (\delta g^{\alpha\beta}) \right]
+\end{equation}
+note that
+\begin{equation}
+    \delta \t{\Gamma}{^\lambda_\nu_\mu} = - \frac{1}{2} \left[ g_{\mu\kappa} \nabla_\nu (\delta g^{\kappa \lambda}) + g_{\nu\kappa}\nabla_\mu (\delta g^{\lambda \kappa}) - g_{\nu\alpha}g_{\mu\beta} g^{\lambda\kappa} \nabla_\kappa (\delta g^{\alpha\beta}) \right],
+\end{equation}
+
+\begin{equation}
+    \delta \t{\Gamma}{^\sigma_\sigma_\mu} = - \frac{1}{2} \left[ g_{\mu\kappa} \nabla_\sigma (\delta g^{\kappa \sigma}) + g_{\sigma\kappa}\nabla_\mu (\delta g^{\sigma \kappa}) - g_{\sigma\alpha}g_{\mu\beta} g^{\sigma\kappa} \nabla_\kappa (\delta g^{\alpha\beta}) \right].
+\end{equation}
+
+
+
+Then 
+\begin{align}
+    g^{\mu\nu} \delta \t{\Gamma}{^\lambda_\nu_\mu} - g^{\mu\lambda} \delta \t{\Gamma}{^\sigma_\sigma_\mu} &= -\frac{1}{2} \left[g^{\mu\nu} \left\{g_{\mu\kappa} \nabla_\nu (\delta g^{\kappa \lambda}) + g_{\nu\kappa}\nabla_\mu (\delta g^{\lambda \kappa}) - g_{\nu\alpha}g_{\mu\beta} g^{\lambda\kappa} \nabla_\kappa (\delta g^{\alpha\beta}) \right\} \right. \nonumber\\
+                                                                                                          &\qquad \left. - g^{\mu\lambda} \left\{g_{\mu\kappa} \nabla_\sigma (\delta g^{\kappa \sigma}) + g_{\sigma\kappa}\nabla_\mu (\delta g^{\sigma \kappa}) - g_{\sigma\alpha}g_{\mu\beta} g^{\sigma\kappa} \nabla_\kappa (\delta g^{\alpha\beta}) \right\} \right] \\
+                                                                                                          &= -\frac{1}{2} \left[  \nabla_\nu (\delta g^{\nu \lambda}) + \nabla_\mu (\delta g^{\lambda \mu}) - g_{\mu\beta} g^{\lambda\kappa} \nabla_\kappa (\delta g^{\mu\beta})  \right. \nonumber\\
+                                                                                                          &\qquad \left. -   \nabla_\sigma (\delta g^{\lambda \sigma}) - g^{\mu\lambda} g_{\sigma\kappa}\nabla_\mu (\delta g^{\sigma \kappa}) +  \nabla_\kappa (\delta g^{\kappa\lambda})  \right] \\
+                                                                                                          &= -\frac{1}{2} \left[  \nabla_\nu (\delta g^{\nu \lambda}) + \nabla_\mu (\delta g^{\lambda \mu}) - g_{\mu\beta} g^{\lambda\kappa} \nabla_\kappa (\delta g^{\mu\beta})  \right. \nonumber\\
+                                                                                                          &\qquad \left. -   \nabla_\mu (\delta g^{\lambda \mu}) - g^{\kappa\lambda} g_{\mu\beta}\nabla_\kappa (\delta g^{\mu \beta}) +  \nabla_\kappa (\delta g^{\kappa\lambda})  \right] \\
+                                                                                                          &= g_{\mu\beta} g^{\lambda\kappa} \nabla_\kappa (\delta g^{\mu\beta}) - \nabla_\nu (\delta g^{\nu \lambda})  \nonumber\\
+\end{align}
+and the variation with changing some dummy indices 
+\begin{equation}
+    g^{\mu\nu} \delta R_{\mu\nu} = \nabla_\lambda \left(    g_{\mu\nu} g^{\lambda\sigma} \nabla_\sigma (\delta g^{\mu\nu}) - \nabla_\rho (\delta g^{\rho \lambda}) \right).
+\end{equation} 
+
+Hence we have 
+\begin{equation}
+    \delta S_3 = \int d^n x \sqrt{-g} \ \nabla_\lambda \left( g_{\mu\nu} g^{\lambda\sigma} \nabla_\sigma (\delta g^{\mu\nu}) - \nabla_\rho (\delta g^{\rho \lambda})    \right)
+\end{equation}
+and then
+\begin{equation}
+    \delta S_H = \int dx^n \sqrt{-g} \left( - \frac{1}{2}R g_{\mu\nu} + R_{\mu\nu} \right) \delta g^{\mu\nu}  + \int dx^n \sqrt{-g} \ \nabla_\lambda \left\{ g_{\mu\nu} g^{\lambda\sigma} \nabla_\sigma (\delta g^{\mu\nu}) - \nabla_\rho (\delta g^{\rho \lambda})    \right\} 
+\end{equation}
+
+By Stokes's theorem
+\begin{equation}
+    \int_\Sigma dx^n \nabla_\mu V^\mu \sqrt{|g|} = \int_{\partial\Sigma} n_\mu V^\mu \sqrt{|\gamma|} d^{n-1} x,
+\end{equation}
+the second integral in $\delta S_H$ is
+\begin{equation}
+    \int dx^n \sqrt{-g} \ \nabla_\lambda \left\{ g_{\mu\nu} g^{\lambda\sigma} \nabla_\sigma (\delta g^{\mu\nu}) - \nabla_\rho (\delta g^{\rho \lambda})    \right\} = \text{(Surface  term)} = 0
+\end{equation}
+
+Finialy
+\begin{equation}
+    \delta S_H = \int dx^n \sqrt{-g} \left( R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} \right) \delta g^{\mu\nu}
+\end{equation}
+and the equation we can obtain by functional derivarive is
+\begin{equation}
+    \frac{1}{\sqrt{-g}} \frac{\delta S_H}{\delta g^{\mu\nu}} = R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} 
+\end{equation}
+If it is vacuum the action is
+\begin{equation}
+    S = S_H
+\end{equation}
+and then we get Einstin's equation in vacuum;
+\begin{equation}
+R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = 0
+\end{equation}
+
+\section{IN PRESENCE OF MATTER}
+
+In presence of matters action is
+\begin{equation}
+    S = \frac{1}{16 \pi G} S_H + S_M
+\end{equation}
+Then the equation by variation of metric is
+\begin{equation}
+    \frac{1}{\sqrt{-g}} \frac{\delta S}{\delta g^{\mu\nu}} = \frac{1}{16\pi G} \left( R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} \right) + \frac{1}{\sqrt{-g}} \frac{\delta S_M}{\delta g^{\mu\nu}} = 0
+\end{equation}
+The Einstein's equation is
+\begin{equation}
+    R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = 8\pi G \left( - \frac{2}{\sqrt{-g}} \frac{\delta S_M}{\delta g^\mu\nu} \right)
+\end{equation}
+define energy-momentum tensor by
+\begin{equation}
+    T_{\mu\nu} = - \frac{2}{\sqrt{-g}} \frac{\delta S_M}{\delta g^{\mu\nu}}
+\end{equation}
+Now complete Einstein's equation is
+\begin{equation}
+    R_{\mu\nu} - \frac{1}{2} R g_{\mu\nu} = 8\pi G T_{\mu\nu} 
+\end{equation}
+
+For example, if we adopt action for scalar field for $S_M$
+\begin{equation}
+    S_M = \int dx^n \sqrt{-g} \left[ -\frac{1}{2} g^{\mu\nu} (\nabla_\mu \phi) (\nabla_\nu \phi) - V(\phi) \right].
+\end{equation}
+Variation with respect to metric is
+\begin{align}
+    \delta S_M &= \int dx^n \left[ (\delta \sqrt{-g}) \left( -\frac{1}{2} (\nabla \phi)^2 - V(\phi) \right) - \frac{\sqrt{-g}}{2} \delta g^{\mu\nu} (\nabla_\mu\phi) (\nabla_\nu \phi) \right] \\
+               &= \int dx^n \left[ -\frac{\sqrt{-g}}{2} g_{\mu\nu} \left(-\frac{1}{2} (\nabla \phi)^2 - V(\phi) \right) - \frac{\sqrt{-g}}{2} (\nabla_\mu \phi) ( \nabla_\nu \phi) \right] \delta g^{\mu\nu}
+\end{align}
+taking functional derivative
+\begin{equation}
+    \frac{\delta S_M}{\delta g^{\mu\nu}} = -\frac{1}{2}\sqrt{-g}\left( g_{\mu\nu} \left(-\frac{1}{2} (\nabla \phi)^2 - V(\phi) \right) + (\nabla_\mu \phi) ( \nabla_\nu \phi) \right)
+\end{equation}
+substitute into definition of energy-momentum tensor,
+\begin{equation}
+    T_{\mu\nu} = (\nabla_\mu \phi) (\nabla_\nu\phi) - \frac{1}{2}  g_{\mu\nu} (\nabla \phi)^2 - g_{\mu\nu} V(\phi) 
+\end{equation}
+is energy-momentum tensor for scalar field.
+\end{document}
